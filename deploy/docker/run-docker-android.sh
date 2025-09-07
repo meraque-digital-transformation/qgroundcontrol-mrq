@@ -15,6 +15,6 @@ docker build --file "${DOCKERFILE_PATH}" -t "${IMAGE_NAME}" "${SOURCE_DIR}"
 # Run the Docker container with adjusted mount points
 docker run \
   --rm \
-  -v "${SOURCE_DIR}:/project/source" \
-  -v "${BUILD_DIR}:/project/build" \
+  --mount type=bind,src=${SOURCE_DIR},dst=/project/source \
+  --mount type=bind,src=${BUILD_DIR},dst=/workspace/build/build \
   "${IMAGE_NAME}"
