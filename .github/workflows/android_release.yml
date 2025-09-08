@@ -1,20 +1,20 @@
 # The 32 and 64 bit version of these actions should be kept in sync
 name: Android 32/64-bit Release
 
-on:
-  push:
-    branches:
-      - 'master'
-      - 'Stable*'
-    tags:
-      - 'v*'
-    paths-ignore:
-      - 'docs/**'
-  pull_request:
-    branches:
-    - '*'
-    paths-ignore:
-      - 'docs/**'
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - 'master'
+  #     - 'Stable*'
+  #   tags:
+  #     - 'v*'
+  #   paths-ignore:
+  #     - 'docs/**'
+  # pull_request:
+  #   branches:
+  #   - '*'
+  #   paths-ignore:
+  #     - 'docs/**'
 
 defaults:
   run:

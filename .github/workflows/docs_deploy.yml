@@ -1,21 +1,21 @@
 name: Deploy Docs
 
-on:
-  push:
-    branches:
-      - 'master'
-      - 'Stable*'
-    tags:
-      - 'v*'
-    paths:
-      - docs/**
-  pull_request:
-    branches:
-      - '*'
-    paths:
-      - docs/**
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - 'master'
+  #     - 'Stable*'
+  #   tags:
+  #     - 'v*'
+  #   paths:
+  #     - docs/**
+  # pull_request:
+  #   branches:
+  #     - '*'
+  #   paths:
+  #     - docs/**
 
-  workflow_dispatch:
+  # workflow_dispatch:
 
 env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}

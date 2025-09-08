@@ -1,16 +1,16 @@
 name: Linux Debug and Test
 
-on:
-  push:
-    branches:
-    - 'master'
-    paths-ignore:
-      - 'docs/**'
-  pull_request:
-    branches:
-    - '*'
-    paths-ignore:
-      - 'docs/**'
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #   - 'master'
+  #   paths-ignore:
+  #     - 'docs/**'
+  # pull_request:
+  #   branches:
+  #   - '*'
+  #   paths-ignore:
+  #     - 'docs/**'
 
 defaults:
   run:
