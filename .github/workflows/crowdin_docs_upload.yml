@@ -2,20 +2,20 @@ name: Crowdin - Upload Guide sources (en)
 
 # https://github.com/crowdin/github-action/tree/master
 
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'docs/en/**'
-  pull_request:
-    types:
-      - closed
-    branches:
-      - master
-    paths:
-      - 'docs/en/**'
-  workflow_dispatch:
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'docs/en/**'
+  # pull_request:
+  #   types:
+  #     - closed
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'docs/en/**'
+  # workflow_dispatch:
 
 jobs:
   upload-to-crowdin:
