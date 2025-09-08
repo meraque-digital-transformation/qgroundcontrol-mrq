@@ -2,19 +2,19 @@
 name: Android 32/64-bit Release
 
 on: workflow_dispatch
-  # push:
-  #   branches:
-  #     - 'master'
-  #     - 'Stable*'
-  #   tags:
-  #     - 'v*'
-  #   paths-ignore:
-  #     - 'docs/**'
-  # pull_request:
-  #   branches:
-  #   - '*'
-  #   paths-ignore:
-  #     - 'docs/**'
+  push:
+    branches:
+      - 'master'
+      - 'Stable*'
+    tags:
+      - 'v*'
+    paths-ignore:
+      - 'docs/**'
+  pull_request:
+    branches:
+    - '*'
+    paths-ignore:
+      - 'docs/**'
 
 defaults:
   run:
