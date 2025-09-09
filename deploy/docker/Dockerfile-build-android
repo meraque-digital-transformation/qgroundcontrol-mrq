@@ -19,8 +19,6 @@ RUN add-apt-repository ppa:apt-fast/stable -y
 RUN apt-get update -y
 RUN apt-get install -y apt-fast
 
-RUN apt-get update && apt-fast install -y openjdk-17-jdk
-
 # Setup build tools needed
 RUN apt-fast install -y \
     build-essential \
@@ -45,18 +43,23 @@ RUN apt-fast install -y \
     libxkbcommon-x11-0 \
     libxcb-xkb-dev \
     ccache \
-    unzip python3-pip wget \
-    lld
+    openjdk-11-jdk \
+    unzip \
+    python3-pip \
+    wget \
+    locales \
+    git
 
 RUN python3 -m pip install setuptools wheel py7zr==0.20.*
 RUN python3 -m pip install aqtinstall==3.1.*
 
 # Set JAVA_HOME and update PATH
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV SKIP_JDK_VERSION_CHECK=TRUE
 
 # Install Android SDK and NDK
 RUN mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest && \
-    wget https://dl.google.com/android/repository/commandlinetools-linux-12266719_latest.zip -O /opt/cmdline-tools.zip && \
+    wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip -O /opt/cmdline-tools.zip && \
     unzip /opt/cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools && \
     mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ && \
     rm -rf $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools && \
@@ -101,7 +104,6 @@ ENV LD_LIBRARY_PATH_ARM64=$QT_ROOT_DIR_ARM64/lib:$LD_LIBRARY_PATH
 # Consolidate PATH settings
 ENV PATH=$JAVA_HOME/bin:/usr/lib/ccache:$QT_HOST_PATH/bin:$QT_ROOT_DIR_ARMV7/bin:$QT_ROOT_DIR_ARM64/bin:$PATH:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_BUILD_TOOLS:$ANDROID_NDK_ROOT
 
-RUN apt-get install -y locales git
 RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
 
 RUN git config --global --add safe.directory /project/source
@@ -121,29 +123,10 @@ ENV ANDROID_NDK_HOME: $ANDROID_SDK_ROOT/ndk/21.4.7075529
 ENV ANDROID_NDK_LATEST_HOME: $ANDROID_SDK_ROOT/ndk/21.4.7075529
 ENV ANDROID_NDK: $ANDROID_SDK_ROOT/ndk/21.4.7075529
 
-# Build the project
-# CMD mkdir -p /workspace/build/build && \
-#     cd /workspace/build/build && \
-#     qt-cmake -S /project/source -G Ninja \
-#         -DCMAKE_BUILD_TYPE=Release \
-#         -DCMAKE_WARN_DEPRECATED=FALSE \
-#         -DQT_HOST_PATH=$QT_HOST_PATH \
-#         -DQT_ANDROID_BUILD_ALL_ABIS=ON \
-#         -DANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
-#         -DANDROID_BUILD_TOOLS=$ANDROID_SDK_ROOT/build-tools/36.0.0 \
-#         -DQT_ANDROID_SIGN_APK=ON \
-#         -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-#         -DQGC_APP_NAME="QGroundControl" \
-#         -DQGC_ORG_NAME="Meraque Group Sdn Bhd" \
-#         -DQGC_PACKAGE_NAME="org.meraque.qgroundcontrol" \
-#         -DQGC_STABLE_BUILD=ON && \
-#         cmake --build . --target all --config Release --parallel
-
+# NOTE: if it gives and error for no dialect 'All' in MAVLink, run 'git submodule update --init --recursive' if you haven't
 CMD cd /project/build/ && \
-    /opt/Qt/5.15.2/android/bin/qmake -r /project/source/qgroundcontrol.pro -spec android-clang CONFIG+=Release CONFIG+=installer ANDROID_ABIS="${QT_ANDROID_ABIS}" && \
+    /opt/Qt/5.15.2/android/bin/qmake -r /project/source/qgroundcontrol.pro -spec android-clang CONFIG+=StableBuild CONFIG+=installer ANDROID_ABIS="${QT_ANDROID_ABIS}" && \
     make -j$(nproc)
-#        echo "\n\nDOCKER COMPLETED. WILL REMAIN RUNNING UNTIL CTRL+C\n\n" && \
-#        tail -f > /dev/null
 
 
 
