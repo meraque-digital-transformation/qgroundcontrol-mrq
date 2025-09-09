@@ -33,9 +33,9 @@ jobs:
     strategy:
       matrix:
        include:
-         - architecture: 32bits
-           eabi: armeabi-v7a
-           ARTIFACT: QGroundControl32.apk
+        #  - architecture: 32bits
+        #    eabi: armeabi-v7a
+        #    ARTIFACT: QGroundControl32.apk
          - architecture: 64bits
            eabi: arm64-v8a
            ARTIFACT: QGroundControl64.apk
