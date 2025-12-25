@@ -4,8 +4,17 @@ set -e
 
 apt-get update -y --quiet
 
+# Add apt-fast for much faster downloads
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    software-properties-common \
+    gnupg2 \
+    ca-certificates
+DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:apt-fast/stable -y
+DEBIAN_FRONTEND=noninteractive apt-get update -y
+DEBIAN_FRONTEND=noninteractive apt-get install -y apt-fast
+
 # Build Tools
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     appstream \
     binutils \
     build-essential \
@@ -34,7 +43,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
     zsync
 
 # Qt Required - https://doc.qt.io/qt-6/linux-requirements.html
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     libatspi2.0-dev \
     libfontconfig1-dev \
     libfreetype-dev \
@@ -66,11 +75,11 @@ DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
     libxkbcommon-x11-dev \
     libxrender-dev
 
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     libunwind-dev
 
 # GStreamer
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     libgstreamer1.0-dev \
     libgstreamer-plugins-bad1.0-dev \
     libgstreamer-plugins-base1.0-dev \
@@ -104,7 +113,7 @@ fi
 #     zlib1g-dev
 
 # Speech
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     flite \
     flite1-dev \
     libflite1 \
@@ -116,18 +125,18 @@ DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
     speech-dispatcher-flite
 
 # Joystick
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     libsdl2-dev
 
 # Shapelib
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     libshp-dev
 
 # DNS
 # DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install libavahi-compat-libdnssd-dev
 
 # Additional
-DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
+DEBIAN_FRONTEND=noninteractive apt-fast -y --quiet install \
     bison \
     flex \
     gobject-introspection \
@@ -190,22 +199,22 @@ DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
     wayland-protocols
 
 if apt-cache show libdav1d-dev >/dev/null 2>&1 && apt-cache show libdav1d-dev 2>/dev/null | grep -q "^Package: libdav1d-dev"; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --quiet libdav1d-dev
+    DEBIAN_FRONTEND=noninteractive apt-fast install -y --quiet libdav1d-dev
 fi
 
 if apt-cache show libvpl-dev >/dev/null 2>&1 && apt-cache show libvpl-dev 2>/dev/null | grep -q "^Package: libvpl-dev"; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --quiet libvpl-dev
+    DEBIAN_FRONTEND=noninteractive apt-fast install -y --quiet libvpl-dev
 fi
 
 # Geo
 if apt-cache show libgeographic-dev >/dev/null 2>&1 && apt-cache show libgeographic-dev 2>/dev/null | grep -q "^Package: libgeographic-dev"; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --quiet libgeographic-dev
+    DEBIAN_FRONTEND=noninteractive apt-fast install -y --quiet libgeographic-dev
 elif apt-cache show libgeographiclib-dev >/dev/null 2>&1 && apt-cache show libgeographiclib-dev 2>/dev/null | grep -q "^Package: libgeographiclib-dev"; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --quiet libgeographiclib-dev
+    DEBIAN_FRONTEND=noninteractive apt-fast install -y --quiet libgeographiclib-dev
 fi
 
 if apt-cache show intel-media-va-driver >/dev/null 2>&1 && apt-cache show intel-media-va-driver 2>/dev/null | grep -q "^Package: intel-media-va-driver"; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --quiet intel-media-va-driver
+    DEBIAN_FRONTEND=noninteractive apt-fast install -y --quiet intel-media-va-driver
 fi
 
 # Vulkan
