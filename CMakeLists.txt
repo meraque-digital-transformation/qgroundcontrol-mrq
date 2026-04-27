@@ -39,12 +39,16 @@ endif()
 
 include(Git)
 
+SET(QGC_APP_NAME "RACE")
+
 project(${QGC_APP_NAME}
     VERSION ${QGC_APP_VERSION}
     DESCRIPTION ${QGC_APP_DESCRIPTION}
     HOMEPAGE_URL ${QGC_ORG_DOMAIN}
     LANGUAGES C CXX
 )
+
+add_link_options("-fuse-ld=mold")
 
 if(APPLE AND NOT IOS)
     set(MACOS TRUE)

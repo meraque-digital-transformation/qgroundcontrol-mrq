@@ -13,18 +13,24 @@ ENV TZ=America/New_York
 
 
 # Configure time zone and install dependencies
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends software-properties-common gnupg2 ca-certificates
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        eatmydata \
+    && apt-get install -y --no-install-recommends \
+        software-properties-common \
+        gnupg2 \
+        ca-certificates \
+        tzdata \
+    && ln -fs /usr/share/zoneinfo/$TZ /etc/localtime \
+    && dpkg-reconfigure --frontend noninteractive tzdata
 
 # Add apt-fast for much faster downloads
-RUN add-apt-repository ppa:apt-fast/stable -y
-RUN apt-get update -y
-RUN apt-get install -y apt-fast
+RUN add-apt-repository ppa:apt-fast/stable -y \
+    && apt-get update \
+    && apt-get install -y \
+        apt-fast
 
-RUN apt-fast install -y tzdata && \
-    ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
-    dpkg-reconfigure --frontend noninteractive tzdata && \
-    apt-get install -y \
+RUN eatmydata apt-fast install -y \
     build-essential \
     libpulse-dev \
     libxcb-glx0 \
@@ -91,11 +97,16 @@ ENV QT_MODULES="qtcharts qtpositioning qtspeech qt5compat qtmultimedia qtserialp
 #    aqt install-qt $QT_HOST desktop $QT_VERSION $QT_HOST_ARCH -O $QT_PATH -m $QT_MODULES && \
 #    aqt install-qt $QT_HOST $QT_TARGET $QT_VERSION $QT_TARGET_ARCH_ARMV7 -O $QT_PATH -m $QT_MODULES --autodesktop && \
 #    aqt install-qt $QT_HOST $QT_TARGET $QT_VERSION $QT_TARGET_ARCH_ARM64 -O $QT_PATH -m $QT_MODULES --autodesktop
-RUN python3 -m pip install setuptools wheel py7zr aqtinstall
-RUN mkdir -p $QT_PATH
+RUN python3 -m pip install \
+        setuptools \
+        wheel \
+        py7zr \
+        aqtinstall \
+    && mkdir -p $QT_PATH
+
 RUN aqt install-qt $QT_HOST desktop $QT_VERSION $QT_HOST_ARCH -O $QT_PATH -m $QT_MODULES -b https://mirrors.ocf.berkeley.edu/qt/
 RUN aqt install-qt $QT_HOST $QT_TARGET $QT_VERSION $QT_TARGET_ARCH_ARMV7 -O $QT_PATH -m $QT_MODULES --autodesktop -b https://mirrors.ocf.berkeley.edu/qt/
-RUN aqt install-qt $QT_HOST $QT_TARGET $QT_VERSION $QT_TARGET_ARCH_ARM64 -O $QT_PATH -m $QT_MODULES --autodesktop -b https://mirrors.ocf.berkeley.edu/qt/
+RUN eatmydata aqt install-qt $QT_HOST $QT_TARGET $QT_VERSION $QT_TARGET_ARCH_ARM64 -O $QT_PATH -m $QT_MODULES --autodesktop -b https://mirrors.ocf.berkeley.edu/qt/
 
 
 # Set Qt-related environment variables for ARMv7 and ARM64 architectures
@@ -115,9 +126,9 @@ ENV LD_LIBRARY_PATH_ARM64=$QT_ROOT_DIR_ARM64/lib:$LD_LIBRARY_PATH
 ENV PATH=$JAVA_HOME/bin:/usr/lib/ccache:$QT_HOST_PATH/bin:$QT_ROOT_DIR_ARMV7/bin:$QT_ROOT_DIR_ARM64/bin:$PATH:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_BUILD_TOOLS:$ANDROID_NDK_ROOT
 
 # Set Git safe directories and install CMake
-RUN git config --global --add safe.directory /workspace && \
-    git config --global --add safe.directory /project/source && \
-    pip install cmake
+RUN git config --global --add safe.directory /workspace \
+    && git config --global --add safe.directory /project/source \
+    && pip install cmake
 
 # Set working directory
 WORKDIR /workspace
@@ -128,11 +139,12 @@ ENV QT_ANDROID_KEYSTORE_STORE_PASS="12345678"
 ENV QT_ANDROID_KEYSTORE_KEY_PASS="12345678"
 ENV QT_ANDROID_ABIS="arm64-v8a;armeabi-v7a"
 
+RUN apt-fast install -y mold
 
 # Build the project
-CMD rm -rf /workspace/build/shadow_build_dir && mkdir -p /workspace/build/shadow_build_dir && \
-    cd /workspace/build/shadow_build_dir && \
-    qt-cmake -S /project/source -G Ninja \
+CMD mkdir -p /workspace/build/shadow_build_dir \
+    && cd /workspace/build/shadow_build_dir \
+    && qt-cmake -S/project/source -GNinja \
         -DCMAKE_BUILD_TYPE=Release \
         -DQT_HOST_PATH=$QT_HOST_PATH \
         -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
@@ -141,8 +153,12 @@ CMD rm -rf /workspace/build/shadow_build_dir && mkdir -p /workspace/build/shadow
         -DANDROID_BUILD_TOOLS=$ANDROID_SDK_ROOT/build-tools/31.0.0 \
         -DANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
         -DQT_ANDROID_SIGN_APK=ON \
-        -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake && \
-        cmake --build . --target all --config Release --parallel
+        -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
+        -DQGC_APP_NAME="RACE" \
+        -DQGC_ORG_NAME="Meraque Group Sdn Bhd" \
+        -DQGC_PACKAGE_NAME="org.meraque.qgroundcontrol" \
+        -DQGC_STABLE_BUILD=ON \
+    && cmake --build . --target all --config Release --parallel
 
 
 
