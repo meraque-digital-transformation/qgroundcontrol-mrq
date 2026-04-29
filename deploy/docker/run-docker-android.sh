@@ -3,7 +3,7 @@
 set -e
 
 # Build the Docker image for Android
-docker build --file ./deploy/docker/Dockerfile-build-android -t qgc-android-docker .
+docker build --file ./deploy/docker/Dockerfile-build-android-workflow -t qgc-android-docker .
 
 # Run the Docker container with adjusted mount points
 docker run --rm -v ${PWD}:/project/source -v ${PWD}/build:/workspace/build qgc-android-docker

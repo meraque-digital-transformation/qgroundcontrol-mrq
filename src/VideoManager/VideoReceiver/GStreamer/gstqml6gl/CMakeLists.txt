@@ -46,7 +46,8 @@ if(GStreamer_VERSION VERSION_GREATER_EQUAL 1.22)
         NAME gstreamer_good_plugins
         VERSION ${GST_PLUGINS_VERSION}
         # URL https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GST_PLUGINS_VERSION}/gstreamer-${GST_PLUGINS_VERSION}.zip?path=subprojects/gst-plugins-good/ext/qt6
-        URL https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-${GST_PLUGINS_VERSION}.tar.xz
+        # URL https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-${GST_PLUGINS_VERSION}.tar.xz
+        URL ${PROJECT_SOURCE_DIR}/gst-plugins-good-1.22.12.tar.xz
     )
     set(QGC_GST_QT6_PLUGIN_PATH "${gstreamer_good_plugins_SOURCE_DIR}/ext/qt6")
 else()

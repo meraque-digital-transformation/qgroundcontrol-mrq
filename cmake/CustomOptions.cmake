@@ -1,12 +1,12 @@
 include(CMakeDependentOption)
-# The following options can be overriden by custom builds using the CustomOverrides.cmake file
+# The following options can be overridden by custom builds using the CustomOverrides.cmake file
 
-# Herelink integrated contollers only support Android 7.1. The latest version of Qt which supports this is 6.6.3.
+# Herelink integrated controllers only support Android 7.1. The latest version of Qt which supports this is 6.6.3.
 # Given the fact that normal QGC builds have moved on to 6.8.3 this option provides a workaround to be able to use
 # 6.6.3 and older android sdk. Note that this is likely the last major QGC release to provide this workaround.
 # This option is only available when building for Android. Usage of this option for something other than integrated
 # controllers workaround is not supported and will likely cause issues.
-option(QGC_ENABLE_HERELINK "Enable Herelink Support" OFF)
+option(QGC_ENABLE_HERELINK "Enable Herelink Support" ON)
 
 # App
 set(QGC_APP_NAME "QGroundControl" CACHE STRING "App Name")

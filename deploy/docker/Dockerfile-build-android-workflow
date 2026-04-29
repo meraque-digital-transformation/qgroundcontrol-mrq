@@ -1,0 +1,277 @@
+# Use Ubuntu 22.04 as base image
+FROM ubuntu:latest
+
+# Set apt-get to non-interactive and configure time zone
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/New_York
+
+# Configure time zone and install dependencies
+RUN apt-get update \
+    && apt-get install -y tzdata \
+    && ln -fs /usr/share/zoneinfo/$TZ /etc/localtime \
+    && dpkg-reconfigure --frontend noninteractive tzdata \
+    && apt-get install -y --no-install-recommends \
+        software-properties-common \
+        eatmydata \
+    && add-apt-repository ppa:apt-fast/stable -y && apt-get update && apt-get install -y apt-fast \
+    && eatmydata apt-fast install -y \
+        build-essential \
+        libpulse-dev \
+        libxcb-glx0 \
+        libxcb-icccm4 \
+        libxcb-image0 \
+        libxcb-keysyms1 \
+        libxcb-randr0 \
+        libxcb-render-util0 \
+        libxcb-render0 \
+        libxcb-shape0 \
+        libxcb-shm0 \
+        libxcb-sync1 \
+        libxcb-util1 \
+        libxcb-xfixes0 \
+        libxcb-xinerama0 \
+        libxcb1 \
+        libxkbcommon-dev \
+        libxkbcommon-x11-0 \
+        libxcb-xkb-dev \
+        python3 \
+        python3-pip \
+        wget \
+        unzip \
+        git \
+        openjdk-17-jdk \
+        curl \
+        locales \
+        ninja-build
+
+RUN eatmydata apt-fast install -y \
+        appstream \
+        binutils \
+        build-essential \
+        ccache \
+        cmake \
+        cppcheck \
+        file \
+        g++ \
+        gcc \
+        gdb \
+        git \
+        gnupg \
+        gnupg2 \
+        libfuse2 \
+        libfuse3-3 \
+        libtool \
+        locales \
+        make \
+        ninja-build \
+        patchelf \
+        pkgconf \
+        python3 \
+        python3-pip \
+        rsync \
+        wget2 \
+        zsync \
+        libunwind-dev \
+        libgstreamer1.0-dev \
+        libgstreamer-plugins-bad1.0-dev \
+        libgstreamer-plugins-base1.0-dev \
+        libgstreamer-plugins-good1.0-dev \
+        libgstreamer-gl1.0-0 \
+        gstreamer1.0-plugins-bad \
+        gstreamer1.0-plugins-base \
+        gstreamer1.0-plugins-good \
+        gstreamer1.0-plugins-ugly \
+        gstreamer1.0-plugins-rtp \
+        gstreamer1.0-gl \
+        gstreamer1.0-libav \
+        gstreamer1.0-rtsp \
+        gstreamer1.0-x \
+        gstreamer1.0-qt6 \
+        libatspi2.0-dev \
+        libfontconfig1-dev \
+        libfreetype-dev \
+        libglib2.0-dev \
+        libsm-dev \
+        libx11-dev \
+        libx11-xcb-dev \
+        libxcb-cursor-dev \
+        libxcb-glx0-dev \
+        libxcb-icccm4-dev \
+        libxcb-image0-dev \
+        libxcb-keysyms1-dev \
+        libxcb-present-dev \
+        libxcb-randr0-dev \
+        libxcb-render-util0-dev \
+        libxcb-render0-dev \
+        libxcb-shape0-dev \
+        libxcb-shm0-dev \
+        libxcb-sync-dev \
+        libxcb-util-dev \
+        libxcb-xfixes0-dev \
+        libxcb-xinerama0-dev \
+        libxcb-xkb-dev \
+        libxcb1-dev \
+        libxext-dev \
+        libxfixes-dev \
+        libxi-dev \
+        libxkbcommon-dev \
+        libxkbcommon-x11-dev \
+        libxrender-dev \
+        libgl1-mesa-dev \
+        bison \
+        flex \
+        gobject-introspection \
+        gvfs \
+        libasound2-dev \
+        libass-dev \
+        libdrm-dev \
+        libcairo-dev \
+        libelf-dev \
+        libegl1-mesa-dev \
+        libgbm-dev \
+        libgl-dev \
+        libgl1-mesa-dev \
+        libgles-dev \
+        libgles2-mesa-dev \
+        libglew-dev \
+        libglfw3-dev \
+        libglu1-mesa-dev \
+        libglvnd-dev \
+        libglx-dev \
+        libglx-mesa0 \
+        libgudev-1.0-dev \
+        libgraphene-1.0-dev \
+        libharfbuzz-dev \
+        libmp3lame-dev \
+        libmjpegtools-dev \
+        libjpeg-dev \
+        libjson-glib-1.0-0 \
+        libjson-glib-dev \
+        libopenal-dev \
+        libopenjp2-7-dev \
+        libopus-dev \
+        liborc-0.4-dev \
+        libpipewire-0.3-dev \
+        libpng-dev \
+        libpulse-dev \
+        libsoup2.4-dev \
+        libssl-dev \
+        libtheora-dev \
+        libva-dev \
+        libvdpau-dev \
+        libvorbis-dev \
+        libvpx-dev \
+        libwayland-dev \
+        libwxgtk3.*-dev \
+        libx264-dev \
+        libx265-dev \
+        libxcb-dri2-0-dev \
+        libxcb-dri3-dev \
+        libxcb-xf86dri0-dev \
+        libxml2-dev \
+        libzstd-dev \
+        mesa-common-dev \
+        mesa-utils \
+        mesa-va-drivers \
+        mesa-vdpau-drivers \
+        mesa-vulkan-drivers \
+        va-driver-all \
+        vainfo \
+        wayland-protocols \
+        flite \
+        flite1-dev \
+        libflite1 \
+        libspeechd-dev \
+        speech-dispatcher \
+        speech-dispatcher-audio-plugins \
+        speech-dispatcher-espeak \
+        speech-dispatcher-espeak-ng \
+        speech-dispatcher-flite \
+        libsdl2-dev \
+        libshp-dev \
+        libdav1d-dev \
+        libvpl-dev \
+        libgeographiclib-dev \
+        intel-media-va-driver
+
+# Set JAVA_HOME and update PATH
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+# Ensure UTF-8 locale
+RUN locale-gen en_US.UTF-8 && \
+    dpkg-reconfigure --frontend noninteractive locales && \
+    export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+
+# Set environment variables for Android SDK, NDK, and paths
+ENV ANDROID_SDK_ROOT=/opt/android-sdk
+ENV ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/25.1.8937393
+ENV ANDROID_HOME=$ANDROID_SDK_ROOT
+ENV ANDROID_BUILD_TOOLS=$ANDROID_SDK_ROOT/build-tools/35.0.0
+
+# Install Android SDK and NDK
+RUN mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest && \
+    wget https://dl.google.com/android/repository/commandlinetools-linux-12266719_latest.zip -O /opt/cmdline-tools.zip && \
+    unzip /opt/cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools && \
+    mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ && \
+    rm -rf $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools && \
+    rm /opt/cmdline-tools.zip && \
+    yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses && \
+    $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platform-tools" "platforms;android-35" "build-tools;35.0.0" "ndk;25.1.8937393"
+
+# Qt setup and environment variables
+ENV QT_VERSION="6.6.3"
+ENV QT_PATH="/opt/Qt"
+ENV QT_HOST="linux"
+ENV QT_HOST_ARCH="gcc_64"
+ENV QT_TARGET="android"
+ENV QT_TARGET_ARCH_ARMV7="android_armv7"
+ENV QT_TARGET_ARCH_ARM64="android_arm64_v8a"
+ENV QT_MODULES="qtcharts qtpositioning qtspeech qt5compat qtmultimedia qtserialport qtimageformats qtshadertools qtconnectivity qtquick3d qtsensors qtlocation"
+
+# Install aqtinstall and download Qt for both host and target architectures
+# -b https://mirrors.ocf.berkeley.edu/qt/
+RUN python3 -m pip install setuptools wheel py7zr aqtinstall --break-system-packages && \
+    mkdir -p $QT_PATH && \
+    aqt install-qt $QT_HOST desktop $QT_VERSION $QT_HOST_ARCH -O $QT_PATH -m $QT_MODULES -b https://mirrors.ocf.berkeley.edu/qt/ && \
+    aqt install-qt $QT_HOST $QT_TARGET $QT_VERSION $QT_TARGET_ARCH_ARMV7 -O $QT_PATH -m $QT_MODULES --autodesktop -b https://mirrors.ocf.berkeley.edu/qt/ && \
+    aqt install-qt $QT_HOST $QT_TARGET $QT_VERSION $QT_TARGET_ARCH_ARM64 -O $QT_PATH -m $QT_MODULES --autodesktop -b https://mirrors.ocf.berkeley.edu/qt/
+
+# Set Qt-related environment variables for ARMv7 and ARM64 architectures
+ENV QT_ROOT_DIR_ARMV7=$QT_PATH/$QT_VERSION/$QT_TARGET_ARCH_ARMV7
+ENV QT_ROOT_DIR_ARM64=$QT_PATH/$QT_VERSION/$QT_TARGET_ARCH_ARM64
+ENV QT_HOST_PATH=$QT_PATH/$QT_VERSION/$QT_HOST_ARCH
+ENV QT_PLUGIN_PATH_ARMV7=$QT_ROOT_DIR_ARMV7/plugins 
+ENV QT_PLUGIN_PATH_ARM64=$QT_ROOT_DIR_ARM64/plugins
+ENV QML2_IMPORT_PATH_ARMV7=$QT_ROOT_DIR_ARMV7/qml
+ENV QML2_IMPORT_PATH_ARM64=$QT_ROOT_DIR_ARM64/qml
+ENV PKG_CONFIG_PATH_ARMV7=$QT_ROOT_DIR_ARMV7/lib/pkgconfig:$PKG_CONFIG_PATH
+ENV PKG_CONFIG_PATH_ARM64=$QT_ROOT_DIR_ARM64/lib/pkgconfig:$PKG_CONFIG_PATH
+ENV LD_LIBRARY_PATH_ARMV7=$QT_ROOT_DIR_ARMV7/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH_ARM64=$QT_ROOT_DIR_ARM64/lib:$LD_LIBRARY_PATH
+
+# Consolidate PATH settings
+ENV PATH=$JAVA_HOME/bin:/usr/lib/ccache:$QT_HOST_PATH/bin:$QT_ROOT_DIR_ARMV7/bin:$QT_ROOT_DIR_ARM64/bin:$PATH:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_BUILD_TOOLS:$ANDROID_NDK_ROOT
+
+# Set Git safe directories and install CMake
+RUN git config --global --add safe.directory /workspace && \
+    git config --global --add safe.directory /project/source
+    # pip install cmake --break-system-packages
+
+# Set working directory
+WORKDIR /workspace
+
+# Build the project
+CMD ls /opt/Qt/6.6.3/gcc_64/lib/cmake/Qt6Charts/ && mkdir -p /workspace/build/shadow_build_dir && \
+    cd /workspace/build/shadow_build_dir && \
+    qt-cmake -S /project/source -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_WARN_DEPRECATED=FALSE \
+        -DQT_HOST_PATH=$QT_HOST_PATH \
+        -DQT_ANDROID_ABIS="arm64-v8a" \
+        -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
+        -DQT_DEBUG_FIND_PACKAGE=ON \
+        -DANDROID_BUILD_TOOLS=$ANDROID_SDK_ROOT/build-tools/35.0.0 \
+        -DANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
+        -DQT_ANDROID_SIGN_APK=OFF \
+        -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
+    && cmake --build . --target all --config Release
