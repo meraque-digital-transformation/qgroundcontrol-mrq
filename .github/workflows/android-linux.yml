@@ -1,10 +1,10 @@
 name: Android-Linux
 
-on: workflow_dispatch
+on:
   push:
-  branches:
+      branches:
   #     - master
-    - 'Stable_V5.0'
+          - 'Stable_V5.0'
   #   tags:
   #     - 'v*'
   #   paths-ignore:
