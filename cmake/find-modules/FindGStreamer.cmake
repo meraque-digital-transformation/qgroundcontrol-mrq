@@ -107,7 +107,8 @@ elseif(ANDROID)
     CPMAddPackage(
         NAME gstreamer
         VERSION ${GStreamer_FIND_VERSION}
-        URL ${_gst_android_url}
+        URL /project/source/gstreamer-1.0-android-universal-1.22.12.tar.xz
+        # URL ${_gst_android_url}
         # URL_HASH ${_gst_android_url_hash}
     )
 

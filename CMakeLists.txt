@@ -55,12 +55,20 @@ if(QGC_USE_CACHE)
     qgc_config_caching()
 endif()
 
+set(QGC_APP_NAME "RACE")
+set(QGC_ORG_NAME "Meraque Group Sdn Bhd")
+set(QGC_ORG_DOMAIN "meraque.ai")
+set(QGC_PACKAGE_NAME "org.meraque.qgroundcontrol")
+set(QGC_STABLE_BUILD ON)
+
 project(${QGC_APP_NAME}
     VERSION ${QGC_APP_VERSION}
     DESCRIPTION ${QGC_APP_DESCRIPTION}
     HOMEPAGE_URL "https://${QGC_ORG_DOMAIN}"
     LANGUAGES C CXX
 )
+
+add_link_options("-fuse-ld=lld")
 
 #######################################################
 #            CMake Configuration Options
