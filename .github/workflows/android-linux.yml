@@ -4,7 +4,7 @@ on: workflow_dispatch
   push:
   branches:
   #     - master
-  #     - 'Stable*'
+    - 'Stable_V5.0'
   #   tags:
   #     - 'v*'
   #   paths-ignore:
