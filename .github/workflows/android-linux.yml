@@ -6,10 +6,11 @@ on:
     branches:
       # - master
       - 'Stable*'
-  #   tags:
-  #     - 'v*'
-  #   paths-ignore:
-  #     - 'docs/**' # Do not trigger for any changes under docs
+      - 'v*'
+    tags:
+      - 'v*'
+    paths-ignore:
+      - 'docs/**' # Do not trigger for any changes under docs
   # pull_request:
   #   paths:
   #     - '.github/workflows/android-linux.yml'
