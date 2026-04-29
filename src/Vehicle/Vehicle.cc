@@ -381,9 +381,7 @@ Vehicle::~Vehicle()
 
 void Vehicle::prepareDelete()
 {
-#if 0
-    // I believe this should no longer be needed with new PhtoVideoControl implmenentation.
-    // Leaving in for now, just in case it need to come back.
+    // Clean up camera manager to stop all timers and prevent crashes during destruction
     if(_cameraManager) {
         // because of _cameraManager QML bindings check for nullptr won't work in the binding pipeline
         // the dangling pointer access will cause a runtime fault
@@ -391,9 +389,8 @@ void Vehicle::prepareDelete()
         _cameraManager = nullptr;
         delete tmpCameras;
         emit cameraManagerChanged();
-        qApp->processEvents();
+        // Note: Removed qApp->processEvents() to prevent MAVLink crashes during destruction
     }
-#endif
 }
 
 void Vehicle::deleteCameraManager()
@@ -608,7 +605,7 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
         mavlink_serial_control_t ser;
         mavlink_msg_serial_control_decode(&message, &ser);
         if (static_cast<size_t>(ser.count) > sizeof(ser.data)) {
-            qWarning() << "Invalid count for SERIAL_CONTROL, discarding." << ser.count;
+            qCWarning(VehicleLog) << "Invalid count for SERIAL_CONTROL, discarding." << ser.count;
         } else {
             emit mavlinkSerialControl(ser.device, ser.flags, ser.timeout, ser.baudrate,
                     QByteArray(reinterpret_cast<const char*>(ser.data), ser.count));
@@ -646,7 +643,11 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     {
         mavlink_log_data_t log{};
         mavlink_msg_log_data_decode(&message, &log);
-        emit logData(log.ofs, log.id, log.count, log.data);
+        if (static_cast<size_t>(log.count) > sizeof(log.data)) {
+            qCWarning(VehicleLog) << "Invalid count for LOG_DATA, discarding." << log.count;
+        } else {
+            emit logData(log.ofs, log.id, log.count, log.data);
+        }
         break;
     }
     case MAVLINK_MSG_ID_MESSAGE_INTERVAL:
