@@ -9,17 +9,24 @@ include(CMakeDependentOption)
 option(QGC_ENABLE_HERELINK "Enable Herelink Support" ON)
 
 # App
-set(QGC_APP_NAME "QGroundControl" CACHE STRING "App Name")
+# set(QGC_APP_NAME "QGroundControl" CACHE STRING "App Name")
+# set(QGC_APP_COPYRIGHT "Copyright (c) 2025 QGroundControl. All rights reserved." CACHE STRING "Copyright")
+# set(QGC_APP_DESCRIPTION "Open Source Ground Control App" CACHE STRING "Description")
+# set(QGC_ORG_NAME "QGroundControl" CACHE STRING "Org Name")
+# set(QGC_ORG_DOMAIN "qgroundcontrol.com" CACHE STRING "Domain")
+# set(QGC_PACKAGE_NAME "org.mavlink.qgroundcontrol" CACHE STRING "Package Name")
+# set(QGC_SETTINGS_VERSION "9" CACHE STRING "Settings Version") # If you need to make an incompatible changes to stored settings, bump this version number up by 1. This will caused store settings to be cleared on next boot.
+set(QGC_APP_NAME "RACE" CACHE STRING "App Name")
 set(QGC_APP_COPYRIGHT "Copyright (c) 2025 QGroundControl. All rights reserved." CACHE STRING "Copyright")
-set(QGC_APP_DESCRIPTION "Open Source Ground Control App" CACHE STRING "Description")
-set(QGC_ORG_NAME "QGroundControl" CACHE STRING "Org Name")
-set(QGC_ORG_DOMAIN "qgroundcontrol.com" CACHE STRING "Domain")
-set(QGC_PACKAGE_NAME "org.mavlink.qgroundcontrol" CACHE STRING "Package Name")
+set(QGC_APP_DESCRIPTION "Meraque Group RACE Ground Control App" CACHE STRING "Description")
+set(QGC_ORG_NAME "Meraque Group Sdn Bhd" CACHE STRING "Org Name")
+set(QGC_ORG_DOMAIN "meraque.ai" CACHE STRING "Domain")
+set(QGC_PACKAGE_NAME "org.meraque.qgroundcontrol" CACHE STRING "Package Name")
 set(QGC_SETTINGS_VERSION "9" CACHE STRING "Settings Version") # If you need to make an incompatible changes to stored settings, bump this version number up by 1. This will caused store settings to be cleared on next boot.
 
 # Build
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
-option(QGC_STABLE_BUILD "Stable Build" OFF)
+option(QGC_STABLE_BUILD "Stable Build" ON)
 option(QGC_USE_CACHE "Use Build Caching" ON)
 cmake_dependent_option(QGC_BUILD_TESTING "Enable testing" ON "CMAKE_BUILD_TYPE STREQUAL Debug" OFF)
 cmake_dependent_option(QGC_DEBUG_QML "Build QGroundControl with QML debugging/profiling support." OFF "CMAKE_BUILD_TYPE STREQUAL Debug" OFF)
@@ -31,14 +38,14 @@ option(QGC_VIEWER3D "Enable Viewer3D" ON) # Qt6Quick3D_FOUND
 
 # Comms
 option(QGC_ENABLE_BLUETOOTH "Enable Bluetooth Links" ON) # Qt6Bluetooth_FOUND
-option(QGC_ZEROCONF_ENABLED "Enable ZeroConf Compatibility" OFF)
+option(QGC_ZEROCONF_ENABLED "Enable ZeroConf Compatibility" ON)
 option(QGC_AIRLINK_DISABLED "Disable AIRLink" ON)
 option(QGC_NO_SERIAL_LINK "Disable Serial Links" OFF) # NOT IOS AND Qt6SerialPort_FOUND
 
 # Video
 option(QGC_ENABLE_UVC "Enable UVC Devices" ON) # Qt6Multimedia_FOUND
 option(QGC_ENABLE_GST_VIDEOSTREAMING "Enable GStreamer Video Backend" ON)
-option(QGC_ENABLE_QT_VIDEOSTREAMING "Enable QtMultimedia Video Backend" OFF) # Qt6Multimedia_FOUND
+option(QGC_ENABLE_QT_VIDEOSTREAMING "Enable QtMultimedia Video Backend" ON) # Qt6Multimedia_FOUND
 
 # MAVLink
 set(QGC_MAVLINK_GIT_REPO "https://github.com/mavlink/c_library_v2.git" CACHE STRING "URL to MAVLink Git Repo")
