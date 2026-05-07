@@ -48,7 +48,7 @@ project(${QGC_APP_NAME}
     LANGUAGES C CXX
 )
 
-add_link_options("-fuse-ld=mold")
+add_link_options("-fuse-ld=lld")
 
 if(APPLE AND NOT IOS)
     set(MACOS TRUE)
